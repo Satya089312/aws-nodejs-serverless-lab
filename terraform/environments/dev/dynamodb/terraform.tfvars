@@ -1,7 +1,7 @@
 aws_region          = "us-east-1"
 environment         = "dev"
 project_name        = "serverless-lab"
-deployment_role_arn = "arn:aws:iam::111111111111:role/terraform-deployment-role"
+deployment_role_arn = "arn:aws:iam::1111:role/terraform-deployment-role"
 
 dynamodb_tables = {
   users = {
