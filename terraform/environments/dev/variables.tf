@@ -22,3 +22,13 @@ variable "s3_buckets" {
     force_destroy = bool
   }))
 }
+variable "dynamodb_tables" {
+  description = "DynamoDB tables required for the environment"
+
+  type = map(object({
+    table_name    = string
+    billing_mode  = string
+    hash_key      = string
+    hash_key_type = string
+  }))
+}
