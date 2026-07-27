@@ -1,0 +1,1 @@
+state_bucket_name = "satya-terraform-state-2026"
