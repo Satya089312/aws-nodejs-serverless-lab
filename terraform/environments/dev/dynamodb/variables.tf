@@ -14,6 +14,17 @@ variable "project_name" {
 }
 
 variable "deployment_role_arn" {
-  description = "IAM role assumed by Terraform for deployment"
+  description = "IAM role assumed by Terraform"
   type        = string
+}
+
+variable "dynamodb_tables" {
+  description = "DynamoDB tables required for the environment"
+
+  type = map(object({
+    table_name    = string
+    billing_mode  = string
+    hash_key      = string
+    hash_key_type = string
+  }))
 }

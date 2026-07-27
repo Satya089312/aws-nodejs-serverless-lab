@@ -11,4 +11,8 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
+
+  assume_role {
+    role_arn = var.deployment_role_arn
+  }
 }
