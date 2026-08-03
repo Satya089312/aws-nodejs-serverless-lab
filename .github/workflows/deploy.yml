@@ -1,0 +1,31 @@
+name: Deploy Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - prod
+
+      component:
+        description: "Terraform Component"
+        required: true
+        type: choice
+        options:
+          - lambda
+          - s3
+          - dynamodb
+          - iam
+          - api_gateway
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/terraform.yml
+    secrets: inherit
+    with:
+      working-directory: terraform/environments/${{ inputs.environment }}/${{ inputs.component }}
