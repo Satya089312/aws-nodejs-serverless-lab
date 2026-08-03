@@ -1,7 +1,19 @@
 node_modules/
 .env
 *.log
-.terraform/
+
+# Terraform working directories
+**/.terraform/*
+
+# Terraform state
 *.tfstate
 *.tfstate.*
-.terraform.lock.hcl
+
+# Terraform crash logs
+crash.log
+crash.*.log
+
+# Terraform variable files containing secrets, if any
+*.auto.tfvars
+
+# Do NOT ignore .terraform.lock.hcl
