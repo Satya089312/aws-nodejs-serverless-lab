@@ -3,7 +3,7 @@ variable "buckets" {
 
   type = map(object({
     bucket_name   = string
-    versioning    = bool
+    versioning    = string
     force_destroy = bool
   }))
 }
