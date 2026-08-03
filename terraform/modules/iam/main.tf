@@ -16,9 +16,28 @@ resource "aws_iam_role" "this" {
   tags = var.tags
 }
 
-resource "aws_iam_role_policy_attachment" "this" {
-  for_each = toset(var.managed_policy_arns)
+resource "aws_iam_policy" "this" {
+  name = var.policy_name
 
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "CloudWatchLogs"
+        Effect = "Allow"
+
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+  tags = var.tags
+}
+resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
-  policy_arn = each.value
+  policy_arn = aws_iam_policy.this.arn
 }
