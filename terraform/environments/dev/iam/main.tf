@@ -1,8 +1,8 @@
 module "iam" {
   source = "../../../modules/iam"
 
-  role_name           = var.role_name
-  managed_policy_arns = var.managed_policy_arns
+  role_name   = "lambda-execution-role"
+  policy_name = "lambda-execution-policy"
 
   tags = {
     Project     = var.project_name
