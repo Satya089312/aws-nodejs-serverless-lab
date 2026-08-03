@@ -1,31 +1,42 @@
-name: Deploy Infrastructure
+name: Terraform Deploy
 
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: "Environment"
+      tf_directory:
+        description: "Terraform directory"
         required: true
-        default: "dev"
-        type: choice
-        options:
-          - dev
-          - prod
-
-      component:
-        description: "Terraform Component"
-        required: true
-        type: choice
-        options:
-          - lambda
-          - s3
-          - dynamodb
-          - iam
-          - api_gateway
 
 jobs:
-  deploy:
-    uses: ./.github/workflows/terraform.yml
-    secrets: inherit
-    with:
-      working-directory: terraform/environments/${{ inputs.environment }}/${{ inputs.component }}
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Terraform Init
+        working-directory: ${{ inputs.tf_directory }}
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ${{ inputs.tf_directory }}
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ${{ inputs.tf_directory }}
+        run: terraform plan
+
+      - name: Terraform Apply
+        working-directory: ${{ inputs.tf_directory }}
+        run: terraform apply -auto-approve
